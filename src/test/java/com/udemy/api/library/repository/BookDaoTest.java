@@ -30,13 +30,17 @@ public class BookDaoTest {
     public void returnTrueWhenIsbnExists(){
         String isbn ="123";
 
-        var book = Book.builder().title("As aventuras de pimpe").author("AnyBody").isbn(isbn).build();
+        var book = createNewBook(isbn);
         entityManager.persist(book);
 
         boolean existe = bookDao.existsByIsbn(isbn);
 
         assertThat(existe).isTrue();
 
+    }
+
+    private Book createNewBook(String isbn) {
+        return Book.builder().title("As aventuras de pimpe").author("AnyBody").isbn(isbn).build();
     }
 
     @Test
@@ -47,6 +51,41 @@ public class BookDaoTest {
         boolean existe = bookDao.existsByIsbn(isbn);
 
         assertThat(existe).isFalse();
+
+    }
+
+    @Test
+    @DisplayName("deve obter um livro por id")
+    public void findByIdTest(){
+        var book = createNewBook("123");
+        entityManager.persist(book);
+
+        var foundBook = bookDao.findById(book.getId());
+
+        assertThat(foundBook.isPresent()).isTrue();
+    }
+
+    @Test
+    @DisplayName("Deve salvar um livro")
+    public void saveBookTest(){
+        var book = createNewBook("123");
+
+        var bookSAve= bookDao.save(book);
+        assertThat(bookSAve.getId()).isNotNull();
+    }
+    @Test
+    @DisplayName("deve deletar um livro")
+    public void deleteBookTest(){
+
+        var book = createNewBook("123");
+        entityManager.persist(book);
+
+        var foundBook = entityManager.find(Book.class, book.getId());
+        bookDao.delete(foundBook);
+
+        var deleteBook = entityManager.find(Book.class, book.getId());
+
+        assertThat(deleteBook).isNull();
 
     }
 
