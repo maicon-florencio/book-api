@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/books")
 public class BookEndPoint {
@@ -37,7 +39,7 @@ public class BookEndPoint {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public BookDTO save(@RequestBody  BookDTO livro) {
+    public BookDTO save( @RequestBody @Valid BookDTO livro) {
         var bookNovo = modelMapper.map(livro, Book.class);
         bookNovo = bookService.save(bookNovo);
         return modelMapper.map(bookNovo, BookDTO.class);

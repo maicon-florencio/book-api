@@ -1,10 +1,11 @@
 package com.udemy.api.library.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import javax.validation.constraints.NotEmpty;
 
 @Data
 @AllArgsConstructor
@@ -13,11 +14,10 @@ import lombok.NonNull;
 public class BookDTO {
 
     private Long id;
-    @NonNull
+    @NotEmpty
     private String title;
-    @NonNull
+    @NotEmpty
     private String author;
-
-    @NonNull
+    @NotEmpty
     private String isbn;
 }
